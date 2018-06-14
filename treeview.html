@@ -1,0 +1,127 @@
+<!-- See the demo sample-api.html for more details -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="  
+https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/jquery.fancytree/dist/skin-lion/ui.fancytree.min.css" rel="stylesheet">
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <!-- Bundled Fancytree core and most extensions: -->
+        <script src="https://cdn.jsdelivr.net/npm/jquery.fancytree@2.27/dist/jquery.fancytree-all.min.js"></script>
+
+        <script type="text/javascript">
+
+    glyphOpts = {
+        preset: "bootstrap4",
+        map: {
+            expanderClosed: "glyphicon glyphicon-menu-right",  // glyphicon-plus-sign
+            expanderLazy: "glyphicon glyphicon-menu-right",  // glyphicon-plus-sign
+            expanderOpen: "glyphicon glyphicon-menu-down"  // glyphicon-collapse-down
+        }
+    };
+
+            $(function() {
+                $("#tree").fancytree({
+                    source: [
+                        {title: "Node 1", key: "1"},
+                        {title: "Folder 2", key: "2", folder: true, children: [
+                            {title: "Node 2.1", key: "3", myOwnAttr: "abc"},
+                            {title: "Node 2.2", key: "4"}
+                        ]}
+                    ],
+                    activate: (event, data) => {
+                        let node = data.node;
+                        $("#treeInfo").text(JSON.stringify(Object.keys(node), null, 2));
+                    },
+                    glyph: glyphOpts,
+                });
+
+                $("#removeNode").click(() => {
+                    const tree = $("#tree").fancytree("getTree");
+                    const node = tree.getActiveNode();
+                    $("#treeInfo").text("Remove node: " + JSON.stringify({
+                        key: node.key,
+                        title: node.title,
+                        data: node.data,
+                    }, null, 2));
+                    node.remove();
+                });
+
+                $("#addSiblingFileNode").click(() => {
+                    const tree = $("#tree").fancytree("getTree");
+                    const node = tree.getActiveNode();
+                    // Note: key will be generated automatically
+                    node.appendSibling({ title: "New file node" });
+                });
+
+                $("#addSiblingFolderNode").click(() => {
+                    const tree = $("#tree").fancytree("getTree");
+                    const node = tree.getActiveNode();
+                    // Note: key will be generated automatically
+                    node.appendSibling({ title: "New folder node", folder: true });
+                });
+            });
+        </script>
+
+        <style>
+            body {
+                padding-top: 5rem;
+            }
+            .main-content {
+                padding: 3rem 1.5rem;
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsable" aria-controls="collapsable" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsable">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Disabled</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Action 1</a>
+                            <a class="dropdown-item" href="#">Action 2</a>
+                            <a class="dropdown-item" href="#">Action 3</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="container">
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div id="tree">
+                        </div>
+                    </div>
+                    <div class="col-sm-3" id="treeInfo">
+                    </div>
+                    <div class="col-sm-3">
+                        <button id="removeNode">Remove active node</button>
+                        <button id="addSiblingFileNode">Add sibling file node</button>
+                        <button id="addSiblingFolderNode">Add sibling folder node</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

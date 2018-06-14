@@ -7,24 +7,29 @@ https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min
 
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <link href="https://cdn.jsdelivr.net/npm/jquery.fancytree/dist/skin-lion/ui.fancytree.min.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
+        <link href="https://cdn.jsdelivr.net/npm/jquery.fancytree/dist/skin-awesome/ui.fancytree.min.css" rel="stylesheet">
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
         <!-- Bundled Fancytree core and most extensions: -->
         <script src="https://cdn.jsdelivr.net/npm/jquery.fancytree@2.27/dist/jquery.fancytree-all.min.js"></script>
 
         <script type="text/javascript">
 
-    glyphOpts = {
-        preset: "bootstrap4",
-        map: {
-            expanderClosed: "glyphicon glyphicon-menu-right",  // glyphicon-plus-sign
-            expanderLazy: "glyphicon glyphicon-menu-right",  // glyphicon-plus-sign
-            expanderOpen: "glyphicon glyphicon-menu-down"  // glyphicon-collapse-down
-        }
-    };
+    let glyphOpts = {
+    // The preset defines defaults for all supported icon types.
+    // It also defines a common class name that is prepended (in this case 'fa ')
+    preset: "awesome4",
+    map: {
+      // Override distinct default icons here
+      folder: "fa-folder",
+      folderOpen: "fa-folder-open"
+    }
+  };
 
             $(function() {
                 $("#tree").fancytree({
+                    extensions: ["glyph"],
+                    autoScroll: true,
                     source: [
                         {title: "Node 1", key: "1"},
                         {title: "Folder 2", key: "2", folder: true, children: [
@@ -34,7 +39,11 @@ https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min
                     ],
                     activate: (event, data) => {
                         let node = data.node;
-                        $("#treeInfo").text(JSON.stringify(Object.keys(node), null, 2));
+                        $("#treeInfo").text("activate on: " + JSON.stringify(Object.keys(node), null, 2));
+                    },
+                    dblclick: (event, data) => {
+                        let node = data.node;
+                        $("#treeInfo").text("dblclick on: " + JSON.stringify(Object.keys(node), null, 2));
                     },
                     glyph: glyphOpts,
                 });
@@ -63,16 +72,35 @@ https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min
                     // Note: key will be generated automatically
                     node.appendSibling({ title: "New folder node", folder: true });
                 });
+
+                $("#addChildFileNode").click(() => {
+                    const tree = $("#tree").fancytree("getTree");
+                    const node = tree.getActiveNode();
+                    // Note: key will be generated automatically
+                    node.addChildren({ title: "New file node" });
+                });
+
+                $("#addChildFolderNode").click(() => {
+                    const tree = $("#tree").fancytree("getTree");
+                    const node = tree.getActiveNode();
+                    // Note: key will be generated automatically
+                    node.addChildren({ title: "New folder node", folder: true });
+                });
             });
         </script>
 
-        <style>
+        <style type="text/css">
             body {
                 padding-top: 5rem;
             }
             .main-content {
                 padding: 3rem 1.5rem;
                 text-align: left;
+                overflow: scroll;
+            }
+
+            ul.fancytree-container {
+                overflow: scroll;
             }
         </style>
     </head>
@@ -119,6 +147,8 @@ https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min
                         <button id="removeNode">Remove active node</button>
                         <button id="addSiblingFileNode">Add sibling file node</button>
                         <button id="addSiblingFolderNode">Add sibling folder node</button>
+                        <button id="addChildFileNode">Add child file node</button>
+                        <button id="addChildFolderNode">Add child folder node</button>
                     </div>
                 </div>
             </div>

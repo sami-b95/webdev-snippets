@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Autocompletion</title>
+    </head>
+    <body>
+        <div id="editor" style="height: 500px; width: 800px">Type something</div>
+    </body>
+    <script src="https://rawgithub.com/ajaxorg/ace-builds/master/src/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://rawgithub.com/ajaxorg/ace-builds/master/src/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script>
+        const WORD_LIST = [];
+        for(let i = 0; i < 50; i++) {
+            WORD_LIST.push("word_" + i);
+        }
+        const langTools = ace.require("ace/ext/language_tools");
+        const editor = ace.edit("editor");
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+        });
+        let completer = {
+            getCompletions: (editor, session, pos, prefix, callback) => {
+                if(prefix.length == 0) {
+                    callback(null, []);
+                    return;
+                }
+                callback(null, WORD_LIST.map((w) => ({
+                    name: w,
+                    value: w,
+                    score: parseInt(w.split("_")[1]),
+                    meta: "meta"
+                })));
+            },
+        };
+        langTools.addCompleter(completer);
+    </script>
+</html>

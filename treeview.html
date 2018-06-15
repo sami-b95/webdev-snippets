@@ -27,7 +27,7 @@ https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min
   };
 
             $(function() {
-                $("#tree").fancytree({
+                let tree = $("#tree").fancytree({
                     extensions: ["glyph"],
                     autoScroll: true,
                     source: [
@@ -39,13 +39,25 @@ https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min
                     ],
                     activate: (event, data) => {
                         let node = data.node;
-                        $("#treeInfo").text("activate on: " + JSON.stringify(Object.keys(node), null, 2));
+                        $("#treeInfo").text("activate on: " + JSON.stringify({ key: node.key, title: node.title }));
                     },
                     dblclick: (event, data) => {
                         let node = data.node;
-                        $("#treeInfo").text("dblclick on: " + JSON.stringify(Object.keys(node), null, 2));
+                        $("#treeInfo").text("dblclick on: " + JSON.stringify({ key: node.key, title: node.title }));
+                    },
+                    focus: (event, data) => {
+                        let node = data.node;
+                        $("#treeInfo").text("focus on: " + JSON.stringify({ key: node.key, title: node.title }));
                     },
                     glyph: glyphOpts,
+                });
+                tree.on("mouseenter", ".fancytree-title", function(event){
+                    var node = $.ui.fancytree.getNode(event);
+                    $("#treeInfo").text("mouseenter on: " + JSON.stringify({ key: node.key, title: node.title }));
+                });
+                tree.on("mouseleave", ".fancytree-title", function(event){
+                    var node = $.ui.fancytree.getNode(event);
+                    $("#treeInfo").text("mouseleave on: " + JSON.stringify({ key: node.key, title: node.title }));
                 });
 
                 $("#removeNode").click(() => {

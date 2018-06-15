@@ -1,0 +1,110 @@
+<!-- See the demo sample-api.html for more details -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="  
+https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <script src="https://unpkg.com/split.js/split.min.js"></script>
+
+        <style type="text/css">
+            body {
+                padding-top: 5rem;
+            }
+
+            .main-content {
+                padding: 3rem 1.5rem;
+            }
+
+            .double-pane {
+			    border: 1px solid #ddd;
+			    border-radius: 4px;
+			    height: 300px;
+            }
+
+            .split {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+			    overflow-y: auto;
+			    overflow-x: hidden;
+            }
+
+            .split p {
+	            padding: 20px;
+            }
+
+            .split.split-horizontal, .gutter.gutter-horizontal {
+            	height: 100%;
+            	float: left;
+            }
+
+			.gutter {
+				background-color: #eee;
+				background-repeat: no-repeat;
+				background-position: 50%;
+			}
+
+			.gutter.gutter-horizontal {
+				background-image: url("./img/grip_vertical.png");
+				cursor: ew-resize;
+			}
+
+			.gutter.gutter-vertical {
+				background-image: url("./img/grip_horizontal.png");
+				cursor: ns-resize;
+			}
+        </style>
+    </head>
+    <body>
+
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsable" aria-controls="collapsable" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsable">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Disabled</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Action 1</a>
+                            <a class="dropdown-item" href="#">Action 2</a>
+                            <a class="dropdown-item" href="#">Action 3</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="container">
+            <div class="main-content">
+            	<div class="double-pane">
+				    <div id="one" class="split split-horizontal"><p>content one</p></div>
+				    <div id="two" class="split split-horizontal"><p>content two</p></div>
+				    <div id="three" class="split split-horizontal"><p>content three</p></div>
+				</div>
+            </div>
+        </main>
+    </body>    
+    <script>
+		$(() => {
+			var split = Split([ "#one", "#two", "#three" ], {
+				sizes: [20, 40, 40],
+				minSize: 0
+			});
+		});
+    </script>
+</html>
